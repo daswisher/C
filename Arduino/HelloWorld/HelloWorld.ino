@@ -1,3 +1,5 @@
+/*This code requires no external components to run*/
+
 int LED = 13;
 
 void setup(){
