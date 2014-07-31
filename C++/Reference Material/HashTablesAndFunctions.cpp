@@ -77,6 +77,48 @@ void insertName(node* hT[], string n){
     }
 
 }
+void deleteName(node* hT[], string n){
+    int index=h(n,50);
+    node* temp = new node();
+    node* delNode = new node();
+    delNode = hT[index];
+    temp=hT[index];
+        while(delNode->getNext()!=NULL){
+            delNode=delNode->getNext();
+            if(delNode->getName()==n){
+                temp->setNext(delNode->getNext());
+                delete delNode;
+                break;
+            }
+            temp=temp->getNext();
+        }
+}
+
+void findName(node* hT[], string n){
+    int index=h(n,50);
+    node* temp = new node();
+    temp = hT[index];
+        while(temp->getNext()!=NULL&&temp->getName()!=n){
+            temp=temp->getNext();
+        }
+    if(temp->getName()==n){
+        cout<<"Name was found."<<endl;
+    }
+    else{
+        cout<<"Name was not found."<<endl;
+    }
+}
+
+void printName(node* hT[]){
+    node* temp=new node();
+    for(int i = 0; i < 50; i++){
+        temp=hT[i];
+        while(temp->getNext()!=NULL){
+            cout<<temp->getName()<<endl;
+            temp=temp->getNext();
+        }
+    }
+}
 int main(){
     int hashTableSize=50;
     string name;
