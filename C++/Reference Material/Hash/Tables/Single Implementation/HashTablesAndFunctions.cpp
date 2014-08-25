@@ -15,10 +15,7 @@ class node{
             next = NULL;
         }
 
-        ~node(){
-            name="";
-            next=NULL;
-        }
+        //Destructor is unnecessary
 
         string getName(){
             return name;
@@ -60,6 +57,7 @@ string getOption(){
     }
     return opt;
 }
+
 void insertName(node* hT[], string n){
     int index=h(n,50);
     node* temp = new node();
@@ -70,20 +68,30 @@ void insertName(node* hT[], string n){
         hT[index]->setName(n);
     }
     else{
-        while(temp->getNext()!=NULL){
+        while(temp->getNext()!=NULL && temp->getName()!=n){
             temp=temp->getNext();
         }
-        temp->setNext(addNode);
+        if(temp->getName()!=n){
+            temp->setNext(addNode);
+        }
     }
 
 }
+
 void deleteName(node* hT[], string n){
     int index=h(n,50);
     node* temp = new node();
     node* delNode = new node();
     delNode = hT[index];
     temp=hT[index];
-        while(delNode->getNext()!=NULL){
+    if(delNode->getName()==n && delNode->getNext()==NULL){
+        delNode->setName("");
+    }
+    else if(delNode->getName()==n && delNode->getNext()!=NULL){
+        delNode=delNode->getNext();
+    }
+    else{
+        while(delNode->getNext()!=NULL&&delNode->getName()!=n){
             delNode=delNode->getNext();
             if(delNode->getName()==n){
                 temp->setNext(delNode->getNext());
@@ -92,15 +100,16 @@ void deleteName(node* hT[], string n){
             }
             temp=temp->getNext();
         }
+    }
 }
 
 void findName(node* hT[], string n){
     int index=h(n,50);
     node* temp = new node();
     temp = hT[index];
-        while(temp->getNext()!=NULL&&temp->getName()!=n){
-            temp=temp->getNext();
-        }
+    while(temp->getNext()!=NULL&&temp->getName()!=n){
+        temp=temp->getNext();
+    }
     if(temp->getName()==n){
         cout<<"Name was found."<<endl;
     }
@@ -113,12 +122,18 @@ void printName(node* hT[]){
     node* temp=new node();
     for(int i = 0; i < 50; i++){
         temp=hT[i];
-        while(temp->getNext()!=NULL){
+        if(temp->getName()!=""&&temp->getNext()==NULL){
             cout<<temp->getName()<<endl;
-            temp=temp->getNext();
+        }
+        else{
+            while(temp->getNext()!=NULL){
+                cout<<temp->getName()<<endl;
+                temp=temp->getNext();
+            }
         }
     }
 }
+
 int main(){
     int hashTableSize=50;
     string name;
@@ -131,17 +146,20 @@ int main(){
     while(option!="e"){
         if(option=="i"){
             cout<<"Enter a name to insert: "<<endl;
-            cin>>name;
+            cin.ignore();
+            getline(cin, name);
             insertName(hashTable, name);
         }
         else if(option=="d"){
             cout<<"Enter a name to delete: "<<endl;
-            cin>>name;
+            cin.ignore();
+            getline(cin, name);
             deleteName(hashTable, name);
         }
         else if(option=="f"){
             cout<<"Enter a name to find: "<<endl;
-            cin>>name;
+            cin.ignore();
+            getline(cin, name);
             findName(hashTable, name);
         }
         else{ //Implicit that this will be print name
